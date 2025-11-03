@@ -7,9 +7,9 @@ export default async function Checklist() {
   const supabase = await createClient();
 
   const { data: collectibles } = await supabase.from("collectible").select(`
-        collectibleid,
-        collectiblename
-      `)
+    collectibleid,
+    collectiblename
+  `)
 
   return (
     <main>

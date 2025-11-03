@@ -2,12 +2,12 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@mui/material";
 import Link from "next/link";
 
-export default async function SeriesChecklist({ params }: { params: { collectibleid: string } }) {
-
+export default async function SeriesChecklist({ params }: { params: Promise<{ collectibleid: string }> }) {
+  const collectibleid = (await params).collectibleid
   const supabase = await createClient();
 
   const { data: series } = await supabase.from("series").select(`*`)
-    .eq("collectibleid", params.collectibleid)
+    .eq("collectibleid", collectibleid)
 
   return (
     <main>
