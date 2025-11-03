@@ -29,10 +29,21 @@ export async function BlogPost() {
 
   const postsWithAuthors = postData?.map(post => {
     const author = profiles?.find(profile => profile.userid === post.userid);
+    const userTitle = author ? `${author.firstname} ${author.lastname}` : "Anonymous"
+    
+    const commentsWithAuthors = post.comment?.map((comment) => {
+      const commenter = profiles?.find(profile => profile.userid === comment.userid);
+      return {
+        ...comment,
+        userTitle: commenter ? `${commenter.firstname} ${commenter.lastname}` : "Anonymous"
+      }
+    })
+
     return {
       ...post,
-      userTitle: author ? `${author.firstname} ${author.lastname}` : "Anonymous"
-    };
+      userTitle,
+      comment: commentsWithAuthors
+    }
   });
 
   async function addLike(formData: FormData) {
@@ -59,7 +70,7 @@ export async function BlogPost() {
           </form>
           {post.comment?.map((comment) => (
             <div key={comment.commentid}>
-              <span>{comment.userid} </span>
+              <span>{comment.userTitle} </span>
               <span>{dayjs(comment.datetimeposted).format('MM/DD/YYYY h:mm A')}</span>
               <p>{comment.content}</p>
               <span>
