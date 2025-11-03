@@ -25,6 +25,16 @@ export async function BlogPost() {
     `)
     .order("likes", { ascending: false });
 
+  const { data: profiles } = await supabase.from("userprofile").select("userid, firstname, lastname");
+
+  const postsWithAuthors = postData?.map(post => {
+    const author = profiles?.find(profile => profile.userid === post.userid);
+    return {
+      ...post,
+      userTitle: author ? `${author.firstname} ${author.lastname}` : "Anonymous"
+    };
+  });
+
   async function addLike(formData: FormData) {
     "use server";
     const supabase = await createClient();
@@ -37,14 +47,14 @@ export async function BlogPost() {
 
   return (
     <div>
-      {postData?.map((post) => (<div key={post.blogpostid} className="blogPost">
+      {postsWithAuthors?.map((post) => (<div key={post.blogpostid} className="blogPost">
         <span>
           <h2>{post.title}</h2>
-          <span>{post.userid} </span><span>{dayjs(post.datetimeposted).format('MM/DD/YYYY h:mm A')}</span>
+          <span>{post.userTitle} </span><span>{dayjs(post.datetimeposted).format('MM/DD/YYYY h:mm A')}</span>
           <p>{post.content}</p>
           <form action={addLike}>
             <input type="hidden" name="blogid" value={post.blogpostid} />
-            <Button type="submit">🖒</Button> 
+            <Button type="submit">🖒</Button>
             <span>{post.likes}</span>
           </form>
           {post.comment?.map((comment) => (

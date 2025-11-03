@@ -1,4 +1,4 @@
-import { BlogPost } from "@/components/blog-post";
+import { BlogPost } from "@/components/blog/blog-post";
 import { Button } from "@mui/material";
 
 export default async function Blog() {

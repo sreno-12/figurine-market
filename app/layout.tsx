@@ -1,5 +1,5 @@
 import "./globals.css";
-import { AuthButton } from "@/components/auth-button";
+import { AuthButton } from "@/components/login/auth-button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
