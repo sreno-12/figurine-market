@@ -11,18 +11,9 @@ export async function BlogPost() {
   const { data: postData } = await supabase
     .from("blogpost")
     .select(`
-      blogpostid,
-      title,
-      content,
-      likes,
-      datetimeposted,
-      userid,
+      blogpostid, title, content, likes, datetimeposted, userid,
       comment (
-        commentid,
-        content,
-        datetimeposted,
-        userid,
-        replyto
+        commentid, content, datetimeposted, userid, replyto
       )
     `)
     .order("likes", { ascending: false });
@@ -48,37 +39,45 @@ export async function BlogPost() {
     }
   });
 
-  const getTopLevelComments = (comments: any[]) => comments?.filter(c => c.replyto === null);
-
-  const getReplies = (comments: any[], parentId: any) => comments?.filter(c => c.replyto === parentId);
-
-  async function addLike(formData: FormData) {
-    "use server"
+  async function changeLike(formData: FormData) {
+    "use server";
     const supabase = await createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
     const blogid = formData.get("blogid");
 
-    await supabase.rpc("incrementlike", { postid: blogid });
+    const { data: existingLike } = await supabase
+      .from("likedpost")
+      .select("*")
+      .eq("userid", user?.id)
+      .eq("blogid", blogid)
+      .maybeSingle();
+
+    let likedState = true;
+
+    if (!existingLike) {
+      console.log("new line")
+      await supabase.from("likedpost").insert({
+        userid: user?.id,
+        blogid: blogid,
+        liked: true,
+        changedat: new Date().toISOString(),
+      });
+      await supabase.rpc("incrementlike", { postid: blogid });
+    } else {
+      console.log("update line")
+      likedState = !existingLike.liked;
+
+      await supabase
+        .from("likedpost")
+        .update({ liked: likedState, changedat: new Date().toISOString() })
+        .eq("likedpostid", existingLike.likedpostid);
+
+      const rpcName = likedState ? "incrementlike" : "decrementlike";
+      await supabase.rpc(rpcName, { postid: blogid });
+    }
+
     revalidatePath("/blog");
-  }
-
-  async function addComment(formData: FormData) {
-    "use server"
-    const supabase = await createClient();
-    const content = formData.get("content");
-    const blogpostid = formData.get("blogpostid");
-    const replyto = formData.get("replyto");
-
-    if (!content) return;
-
-    await supabase.from("comment").insert({
-      content,
-      blogpostid,
-      userid: (await supabase.auth.getUser()).data.user?.id,
-      datetimeposted: new Date().toISOString(),
-      replyto: replyto || null,
-    });
-
-    revalidatePath("/blog")
   }
 
   return (
@@ -88,7 +87,7 @@ export async function BlogPost() {
           <h2>{post.title}</h2>
           <div>By <strong>{post.userTitle}</strong> | {dayjs(post.datetimeposted).format('MM/DD/YYYY h:mm A')}</div>
           <p>{post.content}</p>
-          <form action={addLike}>
+          <form action={changeLike}>
             <input type="hidden" name="blogid" value={post.blogpostid} />
             <Button type="submit">🖒 {post.likes}</Button>
           </form>
