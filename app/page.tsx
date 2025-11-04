@@ -1,9 +1,9 @@
-import { BlogPost } from "@/components/blog/blog-post";
+import { HomeBlogPost } from "@/components/blog/home-post";
 
 export default async function Home() {    
   return (
     <main>
-      <BlogPost></BlogPost>
+      <HomeBlogPost></HomeBlogPost>
     </main>
   );
 }

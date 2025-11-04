@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@mui/material";
 import { revalidatePath } from "next/cache";
 import dayjs from 'dayjs';
+import Comments from "./comments";
 
 export async function BlogPost() {
   const supabase = await createClient();
@@ -20,7 +21,8 @@ export async function BlogPost() {
         commentid,
         content,
         datetimeposted,
-        userid
+        userid,
+        replyto
       )
     `)
     .order("likes", { ascending: false });
@@ -29,15 +31,15 @@ export async function BlogPost() {
 
   const postsWithAuthors = postData?.map(post => {
     const author = profiles?.find(profile => profile.userid === post.userid);
-    const userTitle = author ? `${author.firstname} ${author.lastname}` : "Anonymous"
-    
-    const commentsWithAuthors = post.comment?.map((comment) => {
+    const userTitle = author ? `${author.firstname} ${author.lastname}` : "Anonymous";
+
+    const commentsWithAuthors = post.comment?.map(comment => {
       const commenter = profiles?.find(profile => profile.userid === comment.userid);
       return {
         ...comment,
         userTitle: commenter ? `${commenter.firstname} ${commenter.lastname}` : "Anonymous"
       }
-    })
+    });
 
     return {
       ...post,
@@ -46,41 +48,54 @@ export async function BlogPost() {
     }
   });
 
+  const getTopLevelComments = (comments: any[]) => comments?.filter(c => c.replyto === null);
+
+  const getReplies = (comments: any[], parentId: any) => comments?.filter(c => c.replyto === parentId);
+
   async function addLike(formData: FormData) {
-    "use server";
+    "use server"
     const supabase = await createClient();
     const blogid = formData.get("blogid");
 
     await supabase.rpc("incrementlike", { postid: blogid });
-
     revalidatePath("/blog");
+  }
+
+  async function addComment(formData: FormData) {
+    "use server"
+    const supabase = await createClient();
+    const content = formData.get("content");
+    const blogpostid = formData.get("blogpostid");
+    const replyto = formData.get("replyto");
+
+    if (!content) return;
+
+    await supabase.from("comment").insert({
+      content,
+      blogpostid,
+      userid: (await supabase.auth.getUser()).data.user?.id,
+      datetimeposted: new Date().toISOString(),
+      replyto: replyto || null,
+    });
+
+    revalidatePath("/blog")
   }
 
   return (
     <div>
-      {postsWithAuthors?.map((post) => (<div key={post.blogpostid} className="blogPost">
-        <span>
+      {postsWithAuthors?.map(post => (
+        <div key={post.blogpostid} className="blogPost">
           <h2>{post.title}</h2>
-          <span>{post.userTitle} </span><span>{dayjs(post.datetimeposted).format('MM/DD/YYYY h:mm A')}</span>
+          <div>By <strong>{post.userTitle}</strong> | {dayjs(post.datetimeposted).format('MM/DD/YYYY h:mm A')}</div>
           <p>{post.content}</p>
           <form action={addLike}>
             <input type="hidden" name="blogid" value={post.blogpostid} />
-            <Button type="submit">🖒</Button>
-            <span>{post.likes}</span>
+            <Button type="submit">🖒 {post.likes}</Button>
           </form>
-          {post.comment?.map((comment) => (
-            <div key={comment.commentid}>
-              <span>{comment.userTitle} </span>
-              <span>{dayjs(comment.datetimeposted).format('MM/DD/YYYY h:mm A')}</span>
-              <p>{comment.content}</p>
-              <span>
-                <Button>Reply</Button>
-              </span><br />
-            </div>
-          ))}
-        </span>
-      </div>
+
+          <Comments comments={post.comment} postId={post.blogpostid}></Comments>
+        </div>
       ))}
-    </div >
+    </div>
   );
 }

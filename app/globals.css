@@ -34,8 +34,6 @@ body {
 }
 
 .blogPost {
-  display: flex;
-  justify-self: center;
   background-color: thistle;
   border-radius: 7px;
   padding: 10px;
