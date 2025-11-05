@@ -4,9 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export default async function Blog() {
-
+export default async function NewBlogPost() {
+  
   async function newBlogPost(formData: FormData) {
+    "use server"
 
     const supabase = await createClient();
 
