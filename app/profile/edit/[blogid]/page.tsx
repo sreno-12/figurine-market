@@ -9,7 +9,6 @@ async function updateBlogPost(formData: FormData) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const blogid = formData.get("blogid");
   const newtitle = formData.get("blogtitle");
@@ -19,7 +18,7 @@ async function updateBlogPost(formData: FormData) {
     .from("blogpost")
     .update({ title: newtitle, content: newcontent })
     .eq("blogpostid", blogid)
-    .eq("userid", user.id);
+    .eq("userid", user?.id);
 
   revalidatePath("/profile");
   redirect("/profile");
@@ -30,30 +29,31 @@ async function deleteBlogPost(formData: FormData) {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const blogid = formData.get("blogid");
+
+  await supabase.from("comment").delete().eq("blogpostid", blogid);
+
+  await supabase.from("likedpost").delete().eq("blogid", blogid)
 
   await supabase
     .from("blogpost")
     .delete()
     .eq("blogpostid", blogid)
-    .eq("userid", user.id);
+    .eq("userid", user?.id);
 
   revalidatePath("/profile");
   redirect("/profile");
 }
 
-export default async function EditBlogPost({ params }: { params: { blogid: string } }) {
+export default async function EditBlogPost({ params }: { params: Promise<{ blogid: string }> }) {
+  const { blogid } = await params;
   const supabase = await createClient();
 
   const [{ data: { user } }, { data: blog }] = await Promise.all([
     supabase.auth.getUser(),
-    supabase.from("blogpost").select("*").eq("blogpostid", params.blogid).single()
+    supabase.from("blogpost").select("*").eq("blogpostid", blogid).single()
   ]);
-
-  if (!user) redirect("/login");
-  if (!blog || blog.userid !== user.id) redirect("/profile");
 
   return (
     <main>
