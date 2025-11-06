@@ -5,7 +5,7 @@ import { Button, TextField } from "@mui/material";
 
 export default function Comments(props: any) {
   const { comments, postId } = props;
-  
+
   const [replyingTo, setReplyingTo] = useState(null);
   const [newCommentContent, setNewCommentContent] = useState("");
   const [newReplyContent, setNewReplyContent] = useState("");
@@ -37,49 +37,79 @@ export default function Comments(props: any) {
   }
 
   return (
-    <div>
-      <form onSubmit={(e) => handleSubmit(e, null)}>
+    <div className="space-y-6 mt-6">
+      <form onSubmit={(e) => handleSubmit(e, null)} className="flex flex-col gap-2">
         <TextField
           multiline
-          label="Add a comment"
+          label="Add a comment..."
           value={newCommentContent}
           onChange={(e) => setNewCommentContent(e.target.value)}
           required
           fullWidth
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end"
+        >
+          Submit
+        </Button>
       </form>
 
-      {getTopLevelComments(comments).map(comment => (
-        <div key={comment.commentid} style={{ marginTop: "1em" }}>
-          <div>
-            <strong>{comment.userTitle}</strong> | {comment.datetimeposted}
+      {getTopLevelComments(comments).map((comment) => (
+        <div key={comment.commentid} className="bg-purple-50 p-4 rounded-lg">
+          <div className="text-sm text-gray-600 mb-1">
+            <strong className="text-purple-700">{comment.userTitle}</strong> •{" "}
+            {comment.datetimeposted}
           </div>
-          <p>{comment.content}</p>
-          <Button onClick={() => setReplyingTo(comment.commentid)}>Reply</Button>
+          <p className="text-gray-800">{comment.content}</p>
+
+          <div className="mt-2">
+            <Button
+              size="small"
+              onClick={() => setReplyingTo(comment.commentid)}
+              className="!text-purple-600 !normal-case"
+            >
+              Reply
+            </Button>
+          </div>
 
           {replyingTo === comment.commentid && (
-            <form onSubmit={(e) => handleSubmit(e, comment.commentid)}>
+            <form onSubmit={(e) => handleSubmit(e, comment.commentid)} className="mt-2 space-y-2">
               <TextField
                 multiline
-                label="Write a reply"
+                label="Write a reply..."
                 value={newReplyContent}
                 onChange={(e) => setNewReplyContent(e.target.value)}
                 required
                 fullWidth
               />
-              <Button type="submit">Submit Reply</Button>
-              <Button type="button" onClick={() => setReplyingTo(null)}>Cancel</Button>
+              <div className="flex gap-2">
+                <Button
+                  type="submit"
+                  className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case"
+                >
+                  Submit Reply
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setReplyingTo(null)}
+                  className="!text-gray-500 !normal-case"
+                >
+                  Cancel
+                </Button>
+              </div>
             </form>
           )}
 
-          <div style={{ marginLeft: "20px" }}>
-            {getReplies(comments, comment.commentid).map(reply => (
-              <div key={reply.commentid}>
-                <div>
-                  <strong>{reply.userTitle}</strong> | {reply.datetimeposted}
+          {/* Replies */}
+          <div className="pl-5 mt-3 border-l-2 border-purple-200 space-y-3">
+            {getReplies(comments, comment.commentid).map((reply) => (
+              <div key={reply.commentid} className="text-sm">
+                <div className="text-gray-600 mb-1">
+                  <strong className="text-purple-700">{reply.userTitle}</strong> •{" "}
+                  {reply.datetimeposted}
                 </div>
-                <p>{reply.content}</p>
+                <p className="text-gray-800">{reply.content}</p>
               </div>
             ))}
           </div>

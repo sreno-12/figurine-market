@@ -81,19 +81,35 @@ export async function BlogPost() {
   }
 
   return (
-    <div>
-      {postsWithAuthors?.map(post => (
-        <div key={post.blogpostid} className="blogPost">
-          <h2>{post.title}</h2>
-          <div>By <strong>{post.userTitle}</strong> | {dayjs(post.datetimeposted).format('MM/DD/YYYY h:mm A')}</div>
-          <p>{post.content}</p>
-          <form action={changeLike}>
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      {postsWithAuthors?.map((post) => (
+        <article
+          key={post.blogpostid}
+          className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300"
+        >
+          <header className="mb-4">
+            <h2 className="text-2xl font-semibold text-purple-800 mb-1">{post.title}</h2>
+            <div className="text-sm text-gray-500">
+              By <span className="font-medium text-purple-600">{post.userTitle}</span> •{" "}
+              {dayjs(post.datetimeposted).format("MMM D, YYYY h:mm A")}
+            </div>
+          </header>
+
+          <p className="text-gray-800 leading-relaxed mb-4">{post.content}</p>
+
+          <form action={changeLike} className="flex items-center gap-2">
             <input type="hidden" name="blogid" value={post.blogpostid} />
-            <Button type="submit">🖒 {post.likes}</Button>
+            <Button
+              type="submit"
+              className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case"
+            >
+              👍 {post.likes}
+            </Button>
           </form>
 
-          <Comments comments={post.comment} postId={post.blogpostid}></Comments>
-        </div>
+          <hr className="my-4 border-purple-100" />
+          <Comments comments={post.comment} postId={post.blogpostid} />
+        </article>
       ))}
     </div>
   );

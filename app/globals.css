@@ -1,46 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  font-family: monospace;
-  background-color: rgb(245, 228, 245);
-}
-
-.header, .titleWrapper {
-  display: flex;
-  align-items: end;
-  flex-direction: column;
-}
-
-.header {
-  margin: -10px;
-}
-
-.titleWrapper {
-  padding-right: 20px;
-}
-
-.title {
-  margin: 0;
-  font-size: 3em;
-}
-
-.navBar {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  width: 100%;
-  margin: 10px 0;
-  padding:20px;
-  font-size: 2em;
-  background-color: rgb(182, 144, 182);
-}
-
-.blogPost {
-  background-color: thistle;
-  border-radius: 7px;
-  padding: 10px;
-  margin: 30px;
-  width: 80%;
-}
-
-.navButton {
-  text-decoration: none;
+  @apply font-mono bg-purple-100;
 }
