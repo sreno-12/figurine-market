@@ -1,11 +1,10 @@
-"use client"
+"use client";
 
-import {useState} from "react"
-import {Checkbox} from "@mui/material"
+import { useState } from "react";
+import { Checkbox } from "@mui/material";
 
 export default function FigurineCheckbox(props: any) {
   const { figurineid, ownedstatus, userid } = props;
-
   const [checked, setChecked] = useState(ownedstatus);
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,5 +22,16 @@ export default function FigurineCheckbox(props: any) {
     });
   };
 
-  return <Checkbox checked={checked} onChange={handleChange} />;
+  return (
+    <div className="flex justify-center items-center">
+      <Checkbox
+        checked={checked}
+        onChange={handleChange}
+        sx={{
+          color: "#a855f7",
+          "&.Mui-checked": { color: "#9333ea" },
+        }}
+      />
+    </div>
+  );
 }

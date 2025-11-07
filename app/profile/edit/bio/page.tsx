@@ -4,6 +4,7 @@ import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 async function updateProfile(formData: FormData) {
   "use server";
@@ -46,100 +47,199 @@ export default async function EditProfile() {
       `),
       supabase
         .from("userprofile")
-        .select("firstname, lastname, bio, favcollectible, favseries, favfigurine").eq("userid", (await supabase.auth.getUser()).data.user?.id)
+        .select("firstname, lastname, bio, favcollectible, favseries, favfigurine")
+        .eq("userid", (await supabase.auth.getUser()).data.user?.id)
         .single(),
     ]);
 
   return (
-    <main>
-      <form method="POST">
-        <input type="hidden" name="userid" value={user?.id} />
+    <main className="max-w-3xl mx-auto py-10 px-6">
+      <div className="bg-white shadow-md rounded-xl border border-purple-100 p-8">
+        <h1 className="text-3xl font-bold text-purple-700 mb-6 text-center">
+          Edit Profile
+        </h1>
 
-        <h2>First Name:</h2>
-        <input type="text" name="firstname" defaultValue={userprofile?.firstname ?? ""}></input>
+        <form method="POST" className="space-y-8">
+          <input type="hidden" name="userid" value={user?.id} />
 
-        <h2>Last Name:</h2>
-        <input type="text" name="lastname" defaultValue={userprofile?.lastname ?? ""}></input>
+          <section>
+            <h2 className="text-xl font-semibold text-purple-800 mb-3">
+              Personal Info
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="firstname"
+                  defaultValue={userprofile?.firstname ?? ""}
+                  className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastname"
+                  defaultValue={userprofile?.lastname ?? ""}
+                  className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
+                />
+              </div>
+            </div>
 
-        <h2>Bio:</h2>
-        <textarea name="bio" defaultValue={userprofile?.bio ?? ""}></textarea>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Bio
+              </label>
+              <textarea
+                name="bio"
+                rows={4}
+                defaultValue={userprofile?.bio ?? ""}
+                className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
+              />
+            </div>
+          </section>
 
-        <h2>Favorite Collectible:</h2>
-        {collectibles?.map((collectible) => (
-          <div key={collectible.collectibleid}>
-            <h2>{collectible.collectiblename}</h2>
-            <input
-              type="radio"
-              name="collectible"
-              value={collectible.collectibleid}
-              defaultChecked={
-                userprofile?.favcollectible === collectible.collectibleid
-              }
-            />
-          </div>
-        ))}
+          <section>
+            <h2 className="text-xl font-semibold text-purple-800 mb-3">
+              Favorites
+            </h2>
 
-        <h2>Favorite Series:</h2>
-        {collectibles?.map((collectible) => (
-          <Accordion key={collectible.collectibleid}>
-            <AccordionSummary>
-              <h2>{collectible.collectiblename}</h2>
-            </AccordionSummary>
-            <AccordionDetails>
-              {collectible.series?.map((series) => (
-                <div key={series.seriesid}>
-                  <h4>{series.seriesname}</h4>
-                  <input
-                    type="radio"
-                    name="series"
-                    value={series.seriesid}
-                    defaultChecked={userprofile?.favseries === series.seriesid}
-                  />
-                </div>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+            <div className="mb-4">
+              <h3 className="font-medium text-purple-700 mb-2">
+                Favorite Collectible
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {collectibles?.map((collectible) => (
+                  <label
+                    key={collectible.collectibleid}
+                    className="flex items-center gap-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg p-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="collectible"
+                      value={collectible.collectibleid}
+                      defaultChecked={
+                        userprofile?.favcollectible === collectible.collectibleid
+                      }
+                    />
+                    <span className="text-sm text-purple-700 font-medium">
+                      {collectible.collectiblename}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
 
-        <h2>Favorite Figurine:</h2>
-        {collectibles?.map((collectible) => (
-          <Accordion key={collectible.collectibleid}>
-            <AccordionSummary>
-              <h2>{collectible.collectiblename}</h2>
-            </AccordionSummary>
-            <AccordionDetails>
-              {collectible.series?.map((series) => (
-                <Accordion key={series.seriesid}>
-                  <AccordionSummary>
-                    <h3>{series.seriesname}</h3>
+            <div className="mb-4">
+              <h3 className="font-medium text-purple-700 mb-2">
+                Favorite Series
+              </h3>
+              {collectibles?.map((collectible) => (
+                <Accordion
+                  key={collectible.collectibleid}
+                  className="!bg-purple-50 !shadow-none !border !border-purple-200 !rounded-lg !mb-2"
+                >
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <span className="text-purple-800 font-semibold">
+                      {collectible.collectiblename}
+                    </span>
                   </AccordionSummary>
-                  <AccordionDetails>
-                    {series.figurine?.map((figurine) => (
-                      <div key={figurine.figurineid}>
-                        <h4>{figurine.figurinename}</h4>
+                  <AccordionDetails className="space-y-1">
+                    {collectible.series?.map((series) => (
+                      <label
+                        key={series.seriesid}
+                        className="flex items-center gap-2 p-1 rounded hover:bg-purple-100 cursor-pointer"
+                      >
                         <input
                           type="radio"
-                          name="figurine"
-                          value={figurine.figurineid}
+                          name="series"
+                          value={series.seriesid}
                           defaultChecked={
-                            userprofile?.favfigurine === figurine.figurineid
+                            userprofile?.favseries === series.seriesid
                           }
                         />
-                      </div>
+                        <span className="text-sm text-purple-700">
+                          {series.seriesname}
+                        </span>
+                      </label>
                     ))}
                   </AccordionDetails>
                 </Accordion>
               ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+            </div>
 
-        <br />
-        <Button formAction={updateProfile}>Save</Button>
-        <Button asChild>
-          <Link href="../profile">Cancel</Link>
-        </Button>
-      </form>
+            <div>
+              <h3 className="font-medium text-purple-700 mb-2">
+                Favorite Figurine
+              </h3>
+              {collectibles?.map((collectible) => (
+                <Accordion
+                  key={collectible.collectibleid}
+                  className="!bg-purple-50 !shadow-none !border !border-purple-200 !rounded-lg !mb-2"
+                >
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <span className="text-purple-800 font-semibold">
+                      {collectible.collectiblename}
+                    </span>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {collectible.series?.map((series) => (
+                      <Accordion
+                        key={series.seriesid}
+                        className="!bg-purple-100 !shadow-none !border !border-purple-200 !rounded-lg !mb-2"
+                      >
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <span className="text-purple-700 font-semibold">
+                            {series.seriesname}
+                          </span>
+                        </AccordionSummary>
+                        <AccordionDetails className="space-y-1">
+                          {series.figurine?.map((figurine) => (
+                            <label
+                              key={figurine.figurineid}
+                              className="flex items-center gap-2 p-1 rounded hover:bg-purple-200 cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="figurine"
+                                value={figurine.figurineid}
+                                defaultChecked={
+                                  userprofile?.favfigurine ===
+                                  figurine.figurineid
+                                }
+                              />
+                              <span className="text-sm text-purple-700">
+                                {figurine.figurinename}
+                              </span>
+                            </label>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
+          </section>
+
+          <div className="flex justify-end gap-4 pt-6 border-t border-purple-100">
+            <Button
+              formAction={updateProfile}
+              className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case"
+            >
+              Save Changes
+            </Button>
+            <Button asChild className="!text-purple-600 hover:!text-purple-800">
+              <Link href="/profile">Cancel</Link>
+            </Button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

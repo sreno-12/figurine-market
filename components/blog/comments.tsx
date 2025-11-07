@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Button, TextField } from "@mui/material";
+import dayjs from "dayjs";
 
 export default function Comments(props: any) {
   const { comments, postId } = props;
@@ -59,7 +60,7 @@ export default function Comments(props: any) {
         <div key={comment.commentid} className="bg-purple-50 p-4 rounded-lg">
           <div className="text-sm text-gray-600 mb-1">
             <strong className="text-purple-700">{comment.userTitle}</strong> •{" "}
-            {comment.datetimeposted}
+            {dayjs(comment.datetimeposted).format("MMM D, YYYY h:mm A")}
           </div>
           <p className="text-gray-800">{comment.content}</p>
 
@@ -101,13 +102,12 @@ export default function Comments(props: any) {
             </form>
           )}
 
-          {/* Replies */}
           <div className="pl-5 mt-3 border-l-2 border-purple-200 space-y-3">
             {getReplies(comments, comment.commentid).map((reply) => (
               <div key={reply.commentid} className="text-sm">
                 <div className="text-gray-600 mb-1">
                   <strong className="text-purple-700">{reply.userTitle}</strong> •{" "}
-                  {reply.datetimeposted}
+                  {dayjs(reply.datetimeposted).format("MMM D, YYYY h:mm A")}
                 </div>
                 <p className="text-gray-800">{reply.content}</p>
               </div>

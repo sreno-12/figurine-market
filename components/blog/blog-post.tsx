@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { revalidatePath } from "next/cache";
 import dayjs from 'dayjs';
 import Comments from "./comments";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 export async function BlogPost() {
   const supabase = await createClient();
@@ -18,6 +19,11 @@ export async function BlogPost() {
     `)
     .order("likes", { ascending: false });
 
+  const { data: likedPosts } = await supabase
+    .from("likedpost")
+    .select("*")
+    .eq("userid", user?.id)
+
   const { data: profiles } = await supabase.from("userprofile").select("userid, firstname, lastname");
 
   const postsWithAuthors = postData?.map(post => {
@@ -32,9 +38,13 @@ export async function BlogPost() {
       }
     });
 
+    const likedByUser = likedPosts?.some(like => like.blogid === post.blogpostid && like.liked);
+
+
     return {
       ...post,
       userTitle,
+      liked: likedByUser,
       comment: commentsWithAuthors
     }
   });
@@ -101,9 +111,10 @@ export async function BlogPost() {
             <input type="hidden" name="blogid" value={post.blogpostid} />
             <Button
               type="submit"
-              className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case"
+              className="!bg-purple-400 !text-white hover:!bg-purple-600 !normal-case flex items-center gap-1 px-3 py-1"
             >
-              👍 {post.likes}
+              <ThumbUpIcon className={`w-5 h-5 ${post.liked ? "text-purple-600" : "text-white"}`} />
+              <span>{post.likes}</span>
             </Button>
           </form>
 
