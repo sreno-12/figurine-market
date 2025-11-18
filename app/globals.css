@@ -5,3 +5,11 @@
 body {
   @apply font-mono bg-purple-100;
 }
+
+.buttonPrimary {
+  @apply !bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end !border-violet-500 !border !border-solid
+}
+
+.buttonSecondary {
+  @apply !text-purple-600 hover:!text-purple-800 hover:!bg-purple-200 !normal-case !border-violet-500 !border !border-solid
+}

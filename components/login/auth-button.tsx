@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@mui/material";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "./logout-button";
 
@@ -20,15 +20,15 @@ export async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {userTitle}!
+      <p className="text-lg text-purple-700 text font-bold">Hey, {userTitle}!</p>
       <LogoutButton />
     </div>
   ) : (
     <div className="flex gap-2">
-      <Button asChild size="sm" variant={"outline"}>
+      <Button className="buttonPrimary">
         <Link href="/auth/login">Sign in</Link>
       </Button>
-      <Button asChild size="sm" variant={"default"}>
+      <Button className="buttonSecondary">
         <Link href="/auth/sign-up">Sign up</Link>
       </Button>
     </div>

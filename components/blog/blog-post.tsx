@@ -113,10 +113,10 @@ export async function BlogPost() {
             <input type="hidden" name="blogid" value={post.blogpostid} />
             <Button
               type="submit"
-              className="!bg-purple-400 !text-white hover:!bg-purple-600 !normal-case flex items-center gap-1 px-3 py-1"
+              className="buttonPrimary"
             >
-              <ThumbUpIcon className={`w-5 h-5 ${post.liked ? "text-purple-600" : "text-white"}`} />
-              <span>{post.likes}</span>
+              <ThumbUpIcon className={`w-5 h-5 ${post.liked ? "text-purple-300" : "text-white"}`} />
+              <span className="pl-3">{post.likes}</span>
             </Button>
           </form>}
 

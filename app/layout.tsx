@@ -21,7 +21,7 @@ export default function RootLayout({
               <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-700 tracking-tight">
                 Exchange Mart
               </h1>
-              <p className="text-sm text-purple-500 mt-1">
+              <p className="text-lg text-purple-500 mt-1 ml-1">
                 Collect • Track • Share
               </p>
             </div>
