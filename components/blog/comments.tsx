@@ -3,9 +3,12 @@
 import { FormEvent, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 export default function Comments(props: any) {
-  const { comments, postId } = props;
+  const router = useRouter()
+
+  const { comments, postId, userId } = props;
 
   const [replyingTo, setReplyingTo] = useState(null);
   const [newCommentContent, setNewCommentContent] = useState("");
@@ -17,6 +20,8 @@ export default function Comments(props: any) {
   async function handleSubmit(e: FormEvent<HTMLFormElement>, replyto: null) {
 
     e.preventDefault();
+
+    if (!userId) return
 
     const body = {
       content: replyto ? newReplyContent : newCommentContent,
@@ -35,11 +40,12 @@ export default function Comments(props: any) {
     setNewCommentContent("");
     setNewReplyContent("");
     setReplyingTo(null);
+    router.refresh();
   }
 
   return (
     <div className="space-y-6 mt-6">
-      <form onSubmit={(e) => handleSubmit(e, null)} className="flex flex-col gap-2">
+      { userId && <form onSubmit={(e) => handleSubmit(e, null)} className="flex flex-col gap-2">
         <TextField
           multiline
           label="Add a comment..."
@@ -54,7 +60,7 @@ export default function Comments(props: any) {
         >
           Submit
         </Button>
-      </form>
+      </form>}
 
       {getTopLevelComments(comments).map((comment) => (
         <div key={comment.commentid} className="bg-purple-50 p-4 rounded-lg">
@@ -64,7 +70,7 @@ export default function Comments(props: any) {
           </div>
           <p className="text-gray-800">{comment.content}</p>
 
-          <div className="mt-2">
+          { userId && <div className="mt-2">
             <Button
               size="small"
               onClick={() => setReplyingTo(comment.commentid)}
@@ -72,7 +78,7 @@ export default function Comments(props: any) {
             >
               Reply
             </Button>
-          </div>
+          </div>}
 
           {replyingTo === comment.commentid && (
             <form onSubmit={(e) => handleSubmit(e, comment.commentid)} className="mt-2 space-y-2">

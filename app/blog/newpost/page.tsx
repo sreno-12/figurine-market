@@ -5,21 +5,26 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default async function NewBlogPost() {
-  
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/auth/login")
+  }
+
   async function newBlogPost(formData: FormData) {
     "use server"
 
-    const supabase = await createClient();
 
     const title = formData.get("title")
     const content = formData.get("content")
 
     await supabase
-    .from("blogpost")
-    .insert({
-      title: title,
-      content: content
-    })
+      .from("blogpost")
+      .insert({
+        title: title,
+        content: content
+      })
 
     revalidatePath("/")
     redirect("/blog")

@@ -6,7 +6,7 @@ export default async function CollectibleChecklist({
 }: {
   params: { seriesid?: string; collectibleid?: string };
 }) {
-  const { seriesid } = await params;
+  const { seriesid, collectibleid } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -79,7 +79,7 @@ export default async function CollectibleChecklist({
 
       <div className="mt-10 text-center">
         <a
-          href={`/checklist/${seriesid}`}
+          href={`/checklist/${collectibleid}`}
           className="inline-block text-purple-600 hover:text-purple-800 font-medium"
         >
           ← Back to Series

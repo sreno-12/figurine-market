@@ -56,6 +56,8 @@ export async function BlogPost() {
     const { data: { user } } = await supabase.auth.getUser();
     const blogid = formData.get("blogid");
 
+    if (!user) return;
+
     const { data: existingLike } = await supabase
       .from("likedpost")
       .select("*")
@@ -107,7 +109,7 @@ export async function BlogPost() {
 
           <p className="text-gray-800 leading-relaxed mb-4">{post.content}</p>
 
-          <form action={changeLike} className="flex items-center gap-2">
+          { user && <form action={changeLike} className="flex items-center gap-2">
             <input type="hidden" name="blogid" value={post.blogpostid} />
             <Button
               type="submit"
@@ -116,10 +118,10 @@ export async function BlogPost() {
               <ThumbUpIcon className={`w-5 h-5 ${post.liked ? "text-purple-600" : "text-white"}`} />
               <span>{post.likes}</span>
             </Button>
-          </form>
+          </form>}
 
           <hr className="my-4 border-purple-100" />
-          <Comments comments={post.comment} postId={post.blogpostid} />
+          <Comments comments={post.comment} postId={post.blogpostid} userId={user?.id}/>
         </article>
       ))}
     </div>
