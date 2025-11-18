@@ -65,7 +65,7 @@ export default async function EditBlogPost({ params }: { params: Promise<{ blogi
         >
           <input type="hidden" name="blogid" value={blog.blogpostid} />
           <p className="text-sm text-red-600 mb-3">
-            Deleting this post will permanently remove all comments and likes.
+            Deleting this post will permanently all content.
           </p>
           <Button
             type="submit"

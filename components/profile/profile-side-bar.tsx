@@ -26,18 +26,16 @@ export async function ProfileSideBar() {
 
   return (
     <div className="bg-white rounded-2xl shadow-md border border-purple-100 p-6 flex flex-col gap-6">
-      {/* Header */}
       <div className="text-center">
         <div className="w-24 h-24 mx-auto rounded-full bg-purple-200 flex items-center justify-center text-3xl font-bold text-purple-700">
-          {fullName[0] ?? "?"}
+          {fullName[0] ?? "Anonymous"}
         </div>
         <h2 className="text-2xl font-bold text-purple-800 mt-3">{fullName}</h2>
-        <Button asChild className="mt-3 bg-purple-600 hover:bg-purple-700">
+        <Button asChild className="!bg-purple-500 hover:!bg-purple-600 !text-white !normal-case rounded-xl">
           <Link href="../../profile/edit/bio">Edit Profile</Link>
         </Button>
       </div>
 
-      {/* Bio */}
       <section>
         <h3 className="text-purple-700 font-semibold mb-1">Bio</h3>
         <p className="text-gray-700 whitespace-pre-wrap">
@@ -45,7 +43,6 @@ export async function ProfileSideBar() {
         </p>
       </section>
 
-      {/* Favorites */}
       <section className="space-y-3">
         <div>
           <h3 className="text-purple-700 font-semibold">Favorite Collectible</h3>
