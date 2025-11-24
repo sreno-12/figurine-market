@@ -231,6 +231,7 @@ export default async function EditProfile() {
 
           <div className="flex justify-end gap-4 pt-6 border-t border-purple-100">
             <Button
+              type="submit"
               formAction={updateProfile}
               className="buttonPrimary"
             >

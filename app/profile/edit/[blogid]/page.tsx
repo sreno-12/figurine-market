@@ -1,8 +1,8 @@
 import { Button } from "@mui/material";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import DeleteModal from "./deletemodal";
 
 async function updateBlogPost(formData: FormData) {
   "use server";
@@ -24,25 +24,6 @@ async function updateBlogPost(formData: FormData) {
   redirect("/profile");
 }
 
-async function deleteBlogPost(formData: FormData) {
-  "use server";
-
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const blogid = formData.get("blogid");
-
-  await supabase.from("comment").delete().eq("blogpostid", blogid);
-  await supabase.from("likedpost").delete().eq("blogid", blogid);
-  await supabase
-    .from("blogpost")
-    .delete()
-    .eq("blogpostid", blogid)
-    .eq("userid", user?.id);
-
-  revalidatePath("/profile");
-  redirect("/profile");
-}
-
 export default async function EditBlogPost({ params }: { params: Promise<{ blogid: string }> }) {
   const { blogid } = await params;
   const supabase = await createClient();
@@ -55,25 +36,16 @@ export default async function EditBlogPost({ params }: { params: Promise<{ blogi
   return (
     <main className="max-w-7xl mx-auto py-10 px-6">
       <div className="bg-white shadow-md rounded-xl border border-purple-100 p-8">
-        <h1 className="text-3xl font-bold text-purple-700 mb-8 text-center">
+        <h2 className="text-3xl font-bold text-purple-700 mb-8 text-center">
           Edit Blog Post
-        </h1>
+        </h2>
 
-        <form
-          action={deleteBlogPost}
-          className="mb-8 p-4 border border-red-200 bg-red-50 rounded-lg"
-        >
-          <input type="hidden" name="blogid" value={blog.blogpostid} />
-          <p className="text-sm text-red-600 mb-3">
-            Deleting this post will permanently all content.
-          </p>
-          <Button
-            type="submit"
-            className="!bg-red-500 hover:!bg-red-600 !text-white !normal-case"
-          >
-            Delete Post
-          </Button>
-        </form>
+        <div className="flex justify-end">
+          <DeleteModal
+            blogid={blog.blogpostid}
+            userid={user?.id}
+          />
+        </div>
 
         <form action={updateBlogPost} className="space-y-6">
           <input type="hidden" name="blogid" value={blog.blogpostid} />

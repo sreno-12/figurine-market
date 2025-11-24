@@ -11,9 +11,12 @@ export async function AuthButton() {
   let userTitle = "";
 
   function createUserTitle() {
-    if (!profile?.firstname && !profile?.lastname) 
+    if ((profile?.firstname == "") || (profile?.lastname == "")) {
       userTitle = user?.email as any
-    userTitle = profile?.firstname + " " + profile?.lastname
+    }
+    else {
+      userTitle = (profile?.firstname + " " + profile?.lastname).trim()
+    }
   }
 
   createUserTitle()
