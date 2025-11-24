@@ -1,7 +1,7 @@
 import "./globals.css";
 import { AuthButton } from "@/components/login/auth-button";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -14,11 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-mono bg-gradient-to-br from-purple-50 to-purple-200 min-h-screen text-gray-800">
-        <header className="w-full shadow-sm bg-white/60 backdrop-blur-sm border-b border-purple-200">
-          <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center py-6 px-6">
+      <body className="font-mono min-h-screen">
+        <header className="w-full shadow-sm bg-purple-100 border-b border-purple-300">
+          <div className="max-w-8xl mx-auto flex flex-col sm:flex-row justify-between items-center py-6 px-6">
             <div>
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-700 tracking-tight">
+              <h1 className="text-4xl font-extrabold text-purple-700">
                 Exchange Mart
               </h1>
               <p className="text-lg text-purple-500 mt-1 ml-1">
@@ -26,34 +26,30 @@ export default function RootLayout({
               </p>
             </div>
 
-            <div className="mt-4 sm:mt-0">
+            <div className="mt-4">
               <AuthButton />
             </div>
           </div>
 
-          <nav className="bg-purple-200/50 border-t border-purple-300">
-            <ul className="max-w-6xl mx-auto flex flex-wrap justify-center sm:justify-end gap-3 py-3 px-6">
-              {[
-                { href: "/", label: "Home" },
-                { href: "/blog", label: "Blog" },
-                { href: "/checklist", label: "Checklist" },
-                { href: "/profile", label: "Profile" },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="border-purple-400 text-purple-700 hover:bg-purple-500 hover:text-white transition-colors"
-                  >
-                    <Link href={link.href}>{link.label}</Link>
-                  </Button>
-                </li>
-              ))}
+          <nav className="bg-purple-200/90 border-t border-purple-300">
+            <ul className="max-w-8xl mx-auto flex flex-wrap justify-end gap-3 py-3 px-6">
+              <Button className="buttonSecondary" href={"/"}>
+                Home
+              </Button>
+              <Button className="buttonSecondary" href={"/blog"}>
+                Blog
+              </Button>
+              <Button className="buttonSecondary" href={"/checklist"}>
+                Checklist
+              </Button>
+              <Button className="buttonSecondary" href={"/profile"}>
+                Profile
+              </Button>
             </ul>
           </nav>
         </header>
 
-        <main className="max-w-6xl mx-auto p-6">{children}</main>
+        <main className="max-w-8xl mx-auto p-6 overflow-auto">{children}</main>
       </body>
     </html>
   );

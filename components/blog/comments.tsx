@@ -51,12 +51,11 @@ export default function Comments(props: any) {
           label="Add a comment..."
           value={newCommentContent}
           onChange={(e) => setNewCommentContent(e.target.value)}
-          required
           fullWidth
         />
         <Button
           type="submit"
-          className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end"
+          className="buttonPrimary"
         >
           Submit
         </Button>
@@ -64,17 +63,16 @@ export default function Comments(props: any) {
 
       {getTopLevelComments(comments).map((comment) => (
         <div key={comment.commentid} className="bg-purple-50 p-4 rounded-lg">
-          <div className="text-sm text-gray-600 mb-1">
+          <div className="text-sm text-gray-500 mb-1">
             <strong className="text-purple-700">{comment.userTitle}</strong> •{" "}
             {dayjs(comment.datetimeposted).format("MMM D, YYYY h:mm A")}
           </div>
-          <p className="text-gray-800">{comment.content}</p>
+          <p className="text-gray-700">{comment.content}</p>
 
-          { userId && <div className="mt-2">
+          { userId && <div className="mt-2 -ml-3">
             <Button
-              size="small"
               onClick={() => setReplyingTo(comment.commentid)}
-              className="!text-purple-600 !normal-case"
+              className="!text-purple-500 !normal-case"
             >
               Reply
             </Button>
@@ -87,20 +85,19 @@ export default function Comments(props: any) {
                 label="Write a reply..."
                 value={newReplyContent}
                 onChange={(e) => setNewReplyContent(e.target.value)}
-                required
                 fullWidth
               />
               <div className="flex gap-2">
                 <Button
                   type="submit"
-                  className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case"
+                  className="buttonPrimary"
                 >
                   Submit Reply
                 </Button>
                 <Button
                   type="button"
                   onClick={() => setReplyingTo(null)}
-                  className="!text-gray-500 !normal-case"
+                  className="buttonSecondary"
                 >
                   Cancel
                 </Button>
@@ -111,11 +108,11 @@ export default function Comments(props: any) {
           <div className="pl-5 mt-3 border-l-2 border-purple-200 space-y-3">
             {getReplies(comments, comment.commentid).map((reply) => (
               <div key={reply.commentid} className="text-sm">
-                <div className="text-gray-600 mb-1">
+                <div className="text-gray-500 mb-1">
                   <strong className="text-purple-700">{reply.userTitle}</strong> •{" "}
                   {dayjs(reply.datetimeposted).format("MMM D, YYYY h:mm A")}
                 </div>
-                <p className="text-gray-800">{reply.content}</p>
+                <p className="text-gray-700">{reply.content}</p>
               </div>
             ))}
           </div>

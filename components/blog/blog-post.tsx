@@ -93,35 +93,32 @@ export async function BlogPost() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div className="max-w-7xl mx-auto p-6 space-y-8">
       {postsWithAuthors?.map((post) => (
         <article
           key={post.blogpostid}
           className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300"
         >
           <header className="mb-4">
-            <h2 className="text-2xl font-semibold text-purple-800 mb-1">{post.title}</h2>
+            <h2 className="text-2xl font-semibold text-purple-700 mb-1">{post.title}</h2>
             <div className="text-sm text-gray-500">
-              By <span className="font-medium text-purple-600">{post.userTitle}</span> •{" "}
+              By <span className="font-medium text-purple-500">{post.userTitle}</span> •{" "}
               {dayjs(post.datetimeposted).format("MMM D, YYYY h:mm A")}
             </div>
           </header>
 
-          <p className="text-gray-800 leading-relaxed mb-4">{post.content}</p>
+          <p className="text-gray-700 leading-relaxed mb-4">{post.content}</p>
 
-          { user && <form action={changeLike} className="flex items-center gap-2">
+          {user && <form action={changeLike} className="flex items-center gap-2">
             <input type="hidden" name="blogid" value={post.blogpostid} />
-            <Button
-              type="submit"
-              className="buttonPrimary"
-            >
-              <ThumbUpIcon className={`w-5 h-5 ${post.liked ? "text-purple-300" : "text-white"}`} />
-              <span className="pl-3">{post.likes}</span>
+            <Button type="submit">
+              <ThumbUpIcon className={`w-5 h-5 ${post.liked ? "text-purple-700" : "text-purple-200"}`} />
+              <span className="pl-2 text-purple-700">{post.likes}</span>
             </Button>
           </form>}
 
           <hr className="my-4 border-purple-100" />
-          <Comments comments={post.comment} postId={post.blogpostid} userId={user?.id}/>
+          <Comments comments={post.comment} postId={post.blogpostid} userId={user?.id} />
         </article>
       ))}
     </div>

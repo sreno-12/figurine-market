@@ -31,7 +31,7 @@ export default async function CollectibleChecklist({
   ).length || 0;
 
   return (
-    <main className="max-w-4xl mx-auto py-10 px-6">
+    <main className="max-w-7xl mx-auto py-10 px-6">
       <header className="text-center mb-10">
         <h1 className="text-4xl font-bold text-purple-700 mb-2">
           Figurine Checklist
@@ -39,12 +39,12 @@ export default async function CollectibleChecklist({
         <p className="text-purple-500 text-lg">
           Mark your owned figurines below
         </p>
-        <div className="mt-3 text-sm text-gray-600">
+        <div className="mt-3 text-sm text-gray-500">
           {ownedCount} of {total} owned
         </div>
       </header>
 
-      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-4 gap-6">
         {figurines?.map((figurine) => (
           <div
             key={figurine.figurineid}
@@ -52,7 +52,7 @@ export default async function CollectibleChecklist({
           >
 
             <div className="flex-1 flex flex-col justify-between p-4">
-              <h2 className="text-lg font-semibold text-purple-800 mb-2 text-center">
+              <h2 className="text-lg font-semibold text-purple-700 mb-2 text-center">
                 {figurine.figurinename}
               </h2>
 
@@ -62,7 +62,7 @@ export default async function CollectibleChecklist({
                   userid={user?.id}
                   ownedstatus={ownedMap[figurine.figurineid] ?? false}
                 />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-500">
                   {ownedMap[figurine.figurineid] ? "Owned" : "Not Owned"}
                 </span>
               </div>
@@ -80,7 +80,7 @@ export default async function CollectibleChecklist({
       <div className="mt-10 text-center">
         <a
           href={`/checklist/${collectibleid}`}
-          className="inline-block text-purple-600 hover:text-purple-800 font-medium"
+          className="inline-block text-purple-500 hover:text-purple-700 font-medium"
         >
           ← Back to Series
         </a>

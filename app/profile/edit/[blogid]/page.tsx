@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
@@ -53,7 +53,7 @@ export default async function EditBlogPost({ params }: { params: Promise<{ blogi
   ]);
 
   return (
-    <main className="max-w-3xl mx-auto py-10 px-6">
+    <main className="max-w-7xl mx-auto py-10 px-6">
       <div className="bg-white shadow-md rounded-xl border border-purple-100 p-8">
         <h1 className="text-3xl font-bold text-purple-700 mb-8 text-center">
           Edit Blog Post
@@ -107,12 +107,12 @@ export default async function EditBlogPost({ params }: { params: Promise<{ blogi
           <div className="flex justify-end gap-4 pt-6 border-t border-purple-100">
             <Button
               type="submit"
-              className="!bg-purple-500 hover:!bg-purple-600 !text-white !normal-case"
+              className="buttonPrimary"
             >
               Save Changes
             </Button>
-            <Button asChild className="!text-purple-600 hover:!text-purple-800 !normal-case">
-              <Link href="/profile">Cancel</Link>
+            <Button href="/profile" className="buttonSecondary">
+              Cancel
             </Button>
           </div>
         </form>

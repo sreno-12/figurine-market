@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { Button } from "@mui/material";
 import Link from "next/link";
 
 export default async function SeriesChecklist({
@@ -15,7 +16,7 @@ export default async function SeriesChecklist({
     .eq("collectibleid", collectibleid);
 
   return (
-    <main className="max-w-4xl mx-auto py-10 px-6">
+    <main className="max-w-7xl mx-auto py-10 px-6">
       <header className="text-center mb-10">
         <h2 className="text-4xl font-bold text-purple-700 mb-2">
           Series Checklist
@@ -25,23 +26,23 @@ export default async function SeriesChecklist({
         </p>
       </header>
 
-      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-4 gap-6">
         {series?.map((item) => (
           <div
             key={item.seriesid}
             className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex flex-col"
           >
-            <h3 className="text-xl font-semibold text-purple-800 mb-3">
+            <h3 className="text-xl font-semibold text-purple-700 mb-3">
               {item.seriesname}
             </h3>
 
             <div className="mt-auto">
-              <Link
+              <Button
                 href={`/checklist/${item.collectibleid}/${item.seriesid}`}
-                className="block w-full text-center bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 transition-colors"
+                className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case w-full"
               >
-                View Series Details
-              </Link>
+                View Series Figurines
+              </Button>
             </div>
           </div>
         ))}
@@ -56,7 +57,7 @@ export default async function SeriesChecklist({
       <div className="mt-10 text-center">
         <Link
           href="/checklist"
-          className="inline-block text-purple-600 hover:text-purple-800 font-medium"
+          className="inline-block text-purple-500 hover:text-purple-700 font-medium"
         >
           ← Back to Checklist
         </Link>

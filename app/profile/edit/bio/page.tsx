@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -53,7 +52,7 @@ export default async function EditProfile() {
     ]);
 
   return (
-    <main className="max-w-3xl mx-auto py-10 px-6">
+    <main className="max-w-7xl mx-auto py-10 px-6">
       <div className="bg-white shadow-md rounded-xl border border-purple-100 p-8">
         <h1 className="text-3xl font-bold text-purple-700 mb-6 text-center">
           Edit Profile
@@ -63,12 +62,12 @@ export default async function EditProfile() {
           <input type="hidden" name="userid" value={user?.id} />
 
           <section>
-            <h2 className="text-xl font-semibold text-purple-800 mb-3">
+            <h2 className="text-xl font-semibold text-purple-700 mb-3">
               Personal Info
             </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   First Name
                 </label>
                 <input
@@ -79,7 +78,7 @@ export default async function EditProfile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Last Name
                 </label>
                 <input
@@ -92,7 +91,7 @@ export default async function EditProfile() {
             </div>
 
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 Bio
               </label>
               <textarea
@@ -105,7 +104,7 @@ export default async function EditProfile() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-purple-800 mb-3">
+            <h2 className="text-xl font-semibold text-purple-700 mb-3">
               Favorites
             </h2>
 
@@ -113,7 +112,7 @@ export default async function EditProfile() {
               <h3 className="font-medium text-purple-700 mb-2">
                 Favorite Collectible
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-4 gap-3">
                 {collectibles?.map((collectible) => (
                   <label
                     key={collectible.collectibleid}
@@ -145,7 +144,7 @@ export default async function EditProfile() {
                   className="!bg-purple-50 !shadow-none !border !border-purple-200 !rounded-lg !mb-2"
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <span className="text-purple-800 font-semibold">
+                    <span className="text-purple-700 font-semibold">
                       {collectible.collectiblename}
                     </span>
                   </AccordionSummary>
@@ -183,7 +182,7 @@ export default async function EditProfile() {
                   className="!bg-purple-50 !shadow-none !border !border-purple-200 !rounded-lg !mb-2"
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <span className="text-purple-800 font-semibold">
+                    <span className="text-purple-700 font-semibold">
                       {collectible.collectiblename}
                     </span>
                   </AccordionSummary>
@@ -230,12 +229,12 @@ export default async function EditProfile() {
           <div className="flex justify-end gap-4 pt-6 border-t border-purple-100">
             <Button
               formAction={updateProfile}
-              className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case"
+              className="buttonPrimary"
             >
               Save Changes
             </Button>
-            <Button asChild className="!text-purple-600 hover:!text-purple-800">
-              <Link href="/profile">Cancel</Link>
+            <Button href="/profile" className="buttonSecondary">
+              Cancel
             </Button>
           </div>
         </form>

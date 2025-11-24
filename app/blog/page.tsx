@@ -15,9 +15,17 @@ export default async function Blog() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <div className="flex justify-end">
-        <Button onClick={userHandling} className="!bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end">
+    <div className="max-w-7xl mx-auto p-6 space-y-2">
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-bold text-purple-700 mb-2">
+          Blog
+        </h2>
+        <p className="text-purple-500 text-lg">
+          Share your thoughts and connect with others in blind box community!
+        </p>
+      </div>
+      <div className="flex justify-end pr-6">
+        <Button onClick={userHandling} className="buttonPrimary">
           New Post
         </Button>
       </div>

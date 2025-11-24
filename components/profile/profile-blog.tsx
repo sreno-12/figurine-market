@@ -42,11 +42,11 @@ export async function ProfileBlog() {
             key={post.blogpostid}
             className="bg-white p-6 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200"
           >
-            <h2 className="text-xl font-semibold text-purple-800 mb-1">
+            <h2 className="text-xl font-semibold text-purple-700 mb-1">
               {post.title}
             </h2>
             <div className="text-sm text-gray-500 mb-3">
-              By <strong>{userTitle}</strong> •{" "}
+              By <strong className="text-purple-500">{userTitle}</strong> •{" "}
               {dayjs(post.datetimeposted).format("MM/DD/YYYY h:mm A")}
             </div>
             <p className="text-gray-700 mb-4 whitespace-pre-wrap">
@@ -54,12 +54,7 @@ export async function ProfileBlog() {
             </p>
             <div className="text-right">
               <Button
-                variant="outlined"
-                sx={{
-                  color: "#9333ea",
-                  borderColor: "#c084fc",
-                  "&:hover": { borderColor: "#9333ea", background: "#faf5ff" },
-                }}
+                className="buttonSecondary"
               >
                 <Link href={`/profile/edit/${post.blogpostid}`}>Edit</Link>
               </Button>

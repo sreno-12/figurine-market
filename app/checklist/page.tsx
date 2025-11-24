@@ -10,7 +10,7 @@ export default async function Checklist() {
   `);
 
   return (
-    <main className="max-w-4xl mx-auto py-10 px-6">
+    <main className="max-w-7xl mx-auto py-10 px-6">
       <header className="text-center mb-10">
         <h1 className="text-4xl font-bold text-purple-700 mb-2">Checklist</h1>
         <p className="text-purple-500 text-lg">
@@ -18,13 +18,13 @@ export default async function Checklist() {
         </p>
       </header>
 
-      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-4 gap-6">
         {collectibles?.map((collectible) => (
           <div
             key={collectible.collectibleid}
             className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300"
           >
-            <h2 className="text-xl font-semibold text-purple-800 mb-3">
+            <h2 className="text-xl font-semibold text-purple-700 mb-3">
               {collectible.collectiblename}
             </h2>
 

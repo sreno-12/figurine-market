@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "../ui/button";
+import { Button } from "@mui/material";
 import Link from "next/link";
 
 export async function ProfileSideBar() {
@@ -30,8 +30,8 @@ export async function ProfileSideBar() {
         <div className="w-24 h-24 mx-auto rounded-full bg-purple-200 flex items-center justify-center text-3xl font-bold text-purple-700">
           {fullName[0] ?? "Anonymous"}
         </div>
-        <h2 className="text-2xl font-bold text-purple-800 mt-3">{fullName}</h2>
-        <Button asChild className="!bg-purple-500 hover:!bg-purple-600 !text-white !normal-case rounded-xl">
+        <h2 className="text-2xl font-bold text-purple-700 mt-3">{fullName}</h2>
+        <Button  className="buttonPrimary">
           <Link href="../../profile/edit/bio">Edit Profile</Link>
         </Button>
       </div>
