@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 import {
   Card,
   CardContent,
@@ -43,18 +43,19 @@ export function UpdatePasswordForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle className="text-2xl">Set a New Password</CardTitle>
-          <CardDescription>Please enter your new password below</CardDescription>
+          <CardTitle className="text-2xl text-purple-700">Set a New Password</CardTitle>
+          <CardDescription className="text-gray-700">Please enter your new password below</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleForgotPassword} className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="password">New Password</Label>
+              <Label htmlFor="password" className="text-gray-700">New Password</Label>
               <Input
                 id="password"
                 type="password"
+                className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="New password"
@@ -62,7 +63,7 @@ export function UpdatePasswordForm({
               />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full !bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end !border-violet-500 !border !border-solid" disabled={isLoading}>
               {isLoading ? "Saving..." : "Save new password"}
             </Button>
           </form>

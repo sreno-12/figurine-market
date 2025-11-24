@@ -122,6 +122,7 @@ export default async function EditProfile() {
                       type="radio"
                       name="collectible"
                       value={collectible.collectibleid}
+                      className="accent-purple-700"
                       defaultChecked={
                         userprofile?.favcollectible === collectible.collectibleid
                       }
@@ -157,6 +158,7 @@ export default async function EditProfile() {
                         <input
                           type="radio"
                           name="series"
+                          className="accent-purple-700"
                           value={series.seriesid}
                           defaultChecked={
                             userprofile?.favseries === series.seriesid
@@ -206,6 +208,7 @@ export default async function EditProfile() {
                               <input
                                 type="radio"
                                 name="figurine"
+                                className="accent-purple-700"
                                 value={figurine.figurineid}
                                 defaultChecked={
                                   userprofile?.favfigurine ===

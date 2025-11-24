@@ -55,49 +55,52 @@ export function SignUpForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
+          <CardTitle className="text-2xl text-purple-700">Sign Up</CardTitle>
+          <CardDescription className="text-gray-700">Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp} className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-gray-700">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="m@example.com"
+                className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-gray-700">Password</Label>
               <Input
                 id="password"
                 type="password"
+                className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="repeat-password">Repeat Password</Label>
+              <Label htmlFor="repeat-password" className="text-gray-700">Repeat Password</Label>
               <Input
                 id="repeat-password"
                 type="password"
+                className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
                 value={repeatPassword}
                 onChange={(e) => setRepeatPassword(e.target.value)}
                 required
               />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full !bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end !border-violet-500 !border !border-solid" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Sign Up"}
             </Button>
-            <p className="text-sm text-center mt-2">
+            <p className="text-sm text-center mt-2 text-gray-500">
               Already have an account? <Link href="/auth/login" className="underline">Login</Link>
             </p>
           </form>

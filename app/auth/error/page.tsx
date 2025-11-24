@@ -8,13 +8,13 @@ export default async function Page({
   const params = await searchParams;
 
   return (
-    <div className="flex min-h-[100svh] w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <Card>
+    <div className="flex min-h-svh w-full justify-center p-6 md:p-10 mt-6">
+      <div className="w-full max-w-3xl">
+        <Card className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Oops! Something went wrong</CardTitle>
+            <CardTitle className="text-2xl  text-purple-700 text-center">Oops! Something went wrong</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="text-gray-700">
             <p className="text-sm text-muted-foreground text-center">
               {searchParams.error
                 ? `Error code: ${searchParams.error}`

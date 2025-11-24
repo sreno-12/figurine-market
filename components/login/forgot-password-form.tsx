@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@mui/material";
 import {
   Card,
   CardContent,
@@ -47,30 +47,31 @@ export function ForgotPasswordForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       {success ? (
-        <Card>
+        <Card className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle className="text-2xl">Check Your Email</CardTitle>
-            <CardDescription>Password reset instructions sent</CardDescription>
+            <CardTitle className="text-2xl text-purple-700">Check Your Email</CardTitle>
+            <CardDescription className="text-gray-700">Password reset instructions sent</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground text-center">
+            <p className="text-sm text-muted-foreground text-center text-gray-500">
               If you registered using email/password, you will receive a reset email shortly.
             </p>
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card className="bg-white rounded-xl shadow-md p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
-            <CardTitle className="text-2xl">Reset Your Password</CardTitle>
-            <CardDescription>Enter your email and we'll send a reset link</CardDescription>
+            <CardTitle className="text-2xl text-purple-700">Reset Your Password</CardTitle>
+            <CardDescription className="text-gray-700">Enter your email and we'll send a reset link</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleForgotPassword} className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-gray-700">Email</Label>
                 <Input
                   id="email"
                   type="email"
+                  className="w-full rounded-md border border-purple-200 p-2 focus:ring-2 focus:ring-purple-400 outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="m@example.com"
@@ -78,10 +79,10 @@ export function ForgotPasswordForm({
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full !bg-purple-500 !text-white hover:!bg-purple-600 !normal-case self-end !border-violet-500 !border !border-solid" disabled={isLoading}>
                 {isLoading ? "Sending..." : "Send reset email"}
               </Button>
-              <p className="text-sm text-center mt-2">
+              <p className="text-sm text-center mt-2 text-gray-500">
                 Remember your password? <Link href="/auth/login" className="underline">Login</Link>
               </p>
             </form>
