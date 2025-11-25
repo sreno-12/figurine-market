@@ -28,7 +28,7 @@ export async function ProfileSideBar() {
     <div className="bg-white rounded-2xl shadow-md border border-purple-100 p-6 flex flex-col gap-6">
       <div className="text-center">
         <div className="w-24 h-24 mx-auto rounded-full bg-purple-200 flex items-center justify-center text-3xl font-bold text-purple-700">
-          {fullName[0].toUpperCase() ?? "?"}
+          {fullName[0] ?? "?"}
         </div>
         <h2 className="text-2xl font-bold text-purple-700 mt-3 mb-3">{fullName}</h2>
         <Button  className="buttonPrimary">

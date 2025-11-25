@@ -28,7 +28,7 @@ export async function BlogPost() {
 
   const postsWithAuthors = postData?.map(post => {
     const author = profiles?.find(profile => profile.userid === post.userid);
-    const userTitle = author ? `${author.firstname} ${author.lastname}` : "Anonymous";
+    let userTitle = author ? `${author.firstname} ${author.lastname}` : "Anonymous";
 
     const commentsWithAuthors = post.comment?.map(comment => {
       const commenter = profiles?.find(profile => profile.userid === comment.userid);
