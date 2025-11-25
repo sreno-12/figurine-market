@@ -22,10 +22,17 @@ export async function ProfileBlog() {
     .eq("userid", user.id)
     .single();
 
-  const userTitle =
-    profile?.firstname || profile?.lastname
-      ? `${profile.firstname ?? ""} ${profile.lastname ?? ""}`.trim()
-      : "Anonymous";
+  let userTitle = ""
+  function createUserTitle() {
+    if ((profile?.firstname == "") || (profile?.lastname == "")) {
+      userTitle = user?.email as any
+    }
+    else {
+      userTitle = (profile?.firstname + " " + profile?.lastname).trim()
+    }
+  }
+
+  createUserTitle()
 
   return (
     <div className="space-y-6">
