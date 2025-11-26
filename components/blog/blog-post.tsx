@@ -7,24 +7,22 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 export async function BlogPost() {
   const supabase = await createClient();
+
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: postData } = await supabase
-    .from("blogpost")
-    .select(`
-      blogpostid, title, content, likes, datetimeposted, userid,
-      comment (
-        commentid, content, datetimeposted, userid, replyto
-      )
-    `)
-    .order("likes", { ascending: false });
-
-  const { data: likedPosts } = await supabase
-    .from("likedpost")
-    .select("*")
-    .eq("userid", user?.id)
-
-  const { data: profiles } = await supabase.from("userprofile").select("userid, firstname, lastname");
+  const [{ data: postData }, { data: likedPosts }, { data: profiles }] =
+    await Promise.all([
+      supabase.from("blogpost").select(`
+        blogpostid, title, content, likes, datetimeposted, userid,
+        comment (
+          commentid, content, datetimeposted, userid, replyto
+        )`).order("likes", { ascending: false }),
+      supabase
+        .from("likedpost")
+        .select("*")
+        .eq("userid", user?.id),
+      supabase.from("userprofile").select("userid, firstname, lastname")
+    ])
 
   const postsWithAuthors = postData?.map(post => {
     const author = profiles?.find(profile => profile.userid === post.userid);
@@ -39,7 +37,6 @@ export async function BlogPost() {
     });
 
     const likedByUser = likedPosts?.some(like => like.blogid === post.blogpostid && like.liked);
-
 
     return {
       ...post,

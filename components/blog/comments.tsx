@@ -49,6 +49,7 @@ export default function Comments(props: any) {
         <TextField
           multiline
           label="Add a comment..."
+          className="border-purple-200"
           value={newCommentContent}
           onChange={(e) => setNewCommentContent(e.target.value)}
           fullWidth
@@ -86,6 +87,7 @@ export default function Comments(props: any) {
                 value={newReplyContent}
                 onChange={(e) => setNewReplyContent(e.target.value)}
                 fullWidth
+                className="border-purple-200"
               />
               <div className="flex gap-2">
                 <Button

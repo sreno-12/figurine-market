@@ -3,24 +3,27 @@ import { LoginForm } from "../login/login-form";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { redirect } from "next/navigation";
 
 export async function ProfileBlog() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return <LoginForm />;
+  if (!user) redirect("/auth/login");
 
-  const { data: postData } = await supabase
-    .from("blogpost")
-    .select("*")
-    .eq("userid", user.id)
-    .order("datetimeposted", { ascending: false });
-
-  const { data: profile } = await supabase
-    .from("userprofile")
-    .select("firstname, lastname")
-    .eq("userid", user.id)
-    .single();
+  const [{ data: postData }, { data: profile }] =
+    await Promise.all([
+      supabase
+        .from("blogpost")
+        .select("*")
+        .eq("userid", user.id)
+        .order("datetimeposted", { ascending: false }),
+      supabase
+        .from("userprofile")
+        .select("firstname, lastname")
+        .eq("userid", user.id)
+        .single()
+    ])
 
   let userTitle = ""
   function createUserTitle() {

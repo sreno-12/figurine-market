@@ -10,15 +10,17 @@ export default async function CollectibleChecklist({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: figurines } = await supabase
-    .from("figurine")
-    .select(`figurineid, figurinename, imageurl`) // include imageurl if exists
-    .eq("seriesid", seriesid);
-
-  const { data: ownedfigurines } = await supabase
-    .from("collectiblefigurine")
-    .select("figurineid, owned")
-    .eq("userid", user?.id);
+  const [{ data: figurines }, { data: ownedfigurines }] =
+    await Promise.all([
+      supabase
+        .from("figurine")
+        .select(`figurineid, figurinename, imageurl`) // include imageurl if exists
+        .eq("seriesid", seriesid),
+      supabase
+        .from("collectiblefigurine")
+        .select("figurineid, owned")
+        .eq("userid", user?.id)
+    ])
 
   const ownedMap: Record<number, boolean> = {};
   ownedfigurines?.forEach((cf) => {
@@ -48,7 +50,7 @@ export default async function CollectibleChecklist({
         {figurines?.map((figurine) => (
           <div
             key={figurine.figurineid}
-            className="bg-white rounded-xl border border-purple-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex flex-col"
+            className="bg-white rounded-xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
           >
 
             <div className="flex-1 flex flex-col justify-between p-4">

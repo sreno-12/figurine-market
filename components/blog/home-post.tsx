@@ -3,28 +3,26 @@ import dayjs from 'dayjs';
 
 export async function HomeBlogPost() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: postData } = await supabase
-    .from("blogpost")
-    .select(`
-      blogpostid,
-      title,
-      content,
-      likes,
-      datetimeposted,
-      userid,
-      comment (
-        commentid,
+  const [{ data: { user } }, { data: postData }, { data: profiles }] =
+    await Promise.all([
+      supabase.auth.getUser(),
+      supabase.from("blogpost").select(`
+        blogpostid,
+        title,
         content,
+        likes,
         datetimeposted,
         userid,
-        replyto
-      )
-    `)
-    .order("likes", { ascending: false });
-
-  const { data: profiles } = await supabase.from("userprofile").select("userid, firstname, lastname");
+        comment (
+          commentid,
+          content,
+          datetimeposted,
+          userid,
+          replyto
+        )`).order("likes", { ascending: false }),
+      supabase.from("userprofile").select("userid, firstname, lastname")
+    ])
 
   const postsWithAuthors = postData?.map(post => {
     const author = profiles?.find(profile => profile.userid === post.userid);

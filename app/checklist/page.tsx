@@ -22,7 +22,7 @@ export default async function Checklist() {
         {collectibles?.map((collectible) => (
           <div
             key={collectible.collectibleid}
-            className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300"
+            className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300"
           >
             <h2 className="text-xl font-semibold text-purple-700 mb-3">
               {collectible.collectiblename}

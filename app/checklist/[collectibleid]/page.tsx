@@ -30,7 +30,7 @@ export default async function SeriesChecklist({
         {series?.map((item) => (
           <div
             key={item.seriesid}
-            className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex flex-col"
+            className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
           >
             <h3 className="text-xl font-semibold text-purple-700 mb-3">
               {item.seriesname}
